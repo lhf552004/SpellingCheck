@@ -30,6 +30,7 @@ Create a checker, with the dictionary file:
 	SpellCheck checker = new SpellCheck("c:\\English.dictionary");
 
 Check the text with mutiple words:
+
 	var missSpellingList = checker.CheckText("Abren seam ceuching");
 
 Get the suggestion list of a word:
