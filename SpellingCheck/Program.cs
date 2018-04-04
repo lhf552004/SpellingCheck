@@ -10,9 +10,13 @@ namespace SpellingCheck
     {
         static void Main(string[] args)
         {
-            SpellCheck checker = new SpellCheck("English.dictionary");
-            var missSpellingList = checker.CheckText("Abren seam ceuching");
-            foreach(var missSpelling in missSpellingList)
+            SpellCheck checker = new SpellCheck();
+            DateTime beforDT = System.DateTime.Now;
+            var missSpellingList = checker.CheckText("Abraan seam ceuching");
+            DateTime afterDT = System.DateTime.Now;
+            TimeSpan ts = afterDT.Subtract(beforDT);
+            Console.WriteLine("CheckText Total cost time: {0}ms.", ts.TotalMilliseconds);
+            foreach (var missSpelling in missSpellingList)
             {
                 Console.WriteLine("missSpellingword {0}, postion: {1}", missSpelling.Word, missSpelling.TextPosition);
                 Console.WriteLine("Suggestion list:");

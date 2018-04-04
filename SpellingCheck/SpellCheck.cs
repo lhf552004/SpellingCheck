@@ -45,21 +45,27 @@ namespace SpellingCheck
         /// <returns></returns>
         private bool isMissSpell(string dicWord, string toBeCheckedWord, ref Misspelling theMissSpelling)
         {
-            if(dicWord == toBeCheckedWord)
+            if (dicWord == toBeCheckedWord)
             {
                 //it is correct, so it's not need to suggestion
                 return false;
             }
-            
+
             //Condition1:
             //only some char is wrong but with the same width of string
-            if(projectionCheck(dicWord, toBeCheckedWord,ref theMissSpelling))
+            if (projectionCheck(dicWord, toBeCheckedWord, ref theMissSpelling))
+            {
+                return true;
+            }
+            //Confidtion2:
+            //Maybe there is an additional char inserted into correct word
+            if(similarityCheck(dicWord, toBeCheckedWord, ref theMissSpelling))
             {
                 return true;
             }
             return false;
         }
-        
+
         /// <summary>
         /// To check the char at the same position
         /// </summary>
@@ -69,14 +75,14 @@ namespace SpellingCheck
         private bool projectionCheck(string dicWord, string toBeCheckedWord, ref Misspelling theMissSpelling)
         {
             int failNum = 0;
-            Dictionary<int,bool> theTable = new Dictionary<int, bool>();
-            if(!string.IsNullOrEmpty(dicWord) && !string.IsNullOrEmpty(toBeCheckedWord) && dicWord.Length == toBeCheckedWord.Length)
+            Dictionary<int, bool> theTable = new Dictionary<int, bool>();
+            if (!string.IsNullOrEmpty(dicWord) && !string.IsNullOrEmpty(toBeCheckedWord) && dicWord.Length == toBeCheckedWord.Length)
             {
-                for (int i = 0; i <= dicWord.Length-1; i++)
+                for (int i = 0; i <= dicWord.Length - 1; i++)
                 {
                     char left = dicWord[i];
                     char right = toBeCheckedWord[i];
-                    if(left != right)
+                    if (left != right)
                     {
                         //the same postion char is different
                         theTable.Add(i, false);
@@ -97,12 +103,14 @@ namespace SpellingCheck
                     {
                         //if index less than a value, it means it is simlar to the dic word
                         //Then suggest the dicWord to change
-                        if(theMissSpelling == null)
+                        if (theMissSpelling == null)
                         {
                             theMissSpelling = new Misspelling();
                         }
+                        //It will only store the postion with last matched string
+                        //I think it's better to store every postion for evey matched string
                         theMissSpelling.TextPosition = theTable.Where(i => i.Value == false).FirstOrDefault().Key;
-                        
+
                         //indicate the dic word should be return
                         return true;
                     }
@@ -110,12 +118,78 @@ namespace SpellingCheck
             }
             return false;
         }
-        
+        int min(int a, int b, int c)
+        {
+            return Math.Min(a, Math.Min(b, c));
+        }
+        /// <summary>
+        /// caculate the distance between the two string
+        /// </summary>
+        /// <param name="dicWord"></param>
+        /// <param name="toBeCheckedWord"></param>
+        /// <returns></returns>
+        private int getDistance(string dicWord, string toBeCheckedWord)
+        {
+
+            int dicWordLength = dicWord.Length;
+            int toBeCheckedWordLength = toBeCheckedWord.Length;
+            int[,] matrix = new int[dicWordLength + 1, toBeCheckedWordLength + 1];
+            for (int i = 0; i <= dicWordLength; i++)
+                matrix[i, 0] = i;
+            for (int j = 0; j <= toBeCheckedWordLength; j++)
+                matrix[0, j] = j;
+            for (int i = 1; i <= dicWordLength; i++)
+            {
+                for (int j = 1; j <= toBeCheckedWordLength; j++)
+                {
+                    if (dicWord[i - 1] != toBeCheckedWord[j - 1])
+                    {
+
+                        matrix[i, j] = min(1 + matrix[i - 1, j],  // deletion
+                                        1 + matrix[i, j - 1],  // insertion
+                                        1 + matrix[i - 1, j - 1] // replacement
+                                      );
+                    }
+                    else
+                        matrix[i, j] = matrix[i - 1, j - 1];
+                }
+            }
+            return matrix[dicWordLength, toBeCheckedWordLength];
+        }
+        private int getPosition(string dicWord, string toBeCheckedWord)
+        {
+            bool isContained = false;
+            int position = -1;
+            int dicWordLength = dicWord.Length;
+            int toBeCheckedWordLength = toBeCheckedWord.Length;
+            for (int i = 0; i < dicWordLength; i++)
+            {
+                for (int j = i + 1; j < dicWordLength - i; j++)
+                {
+                    string part = dicWord.Substring(i, j);
+                    if (toBeCheckedWord.Contains(part))
+                    {
+                        isContained = true;
+                    }else if (isContained)
+                    {
+                        string matchedPart = part.Substring(0, part.Length - 1);
+                        position = toBeCheckedWord.IndexOf(matchedPart);
+                    }
+                }
+            }
+            return position;
+        }
         private bool similarityCheck(string dicWord, string toBeCheckedWord, ref Misspelling theMissSpelling)
         {
-            Dictionary<char, int> dicWordTable = new Dictionary<char, int>();
-            Dictionary<char, int> ToBeCheckedWordTable = new Dictionary<char, int>();
-            //for(var )
+            if (getDistance(dicWord, toBeCheckedWord) <= 2)
+            {
+                if (theMissSpelling == null)
+                {
+                    theMissSpelling = new Misspelling();
+                }
+                theMissSpelling.TextPosition = getPosition(dicWord, toBeCheckedWord);
+                return true;
+            }
             return false;
         }
 
@@ -152,10 +226,10 @@ namespace SpellingCheck
 
         }
         #endregion
-        
-        
+
+
         /// <summary>
-        /// Main function 1:
+        /// Main function :
         /// given a string of multiple words, return an array of all misspelled words
         /// </summary>
         /// <param name="text"></param>
@@ -163,7 +237,7 @@ namespace SpellingCheck
         public Misspelling[] CheckText(string text)
         {
             //get the original word list from text
-            string[] words = text.Split(new Char[] { '?', ':',' ', '!', ';', '.','<','>' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = text.Split(new Char[] { '?', ':', ' ', '!', ';', '.', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
             List<Misspelling> theMissSpellingList = new List<Misspelling>();
             foreach (var word in words)
             {
@@ -174,7 +248,7 @@ namespace SpellingCheck
                 {
                     wordToBeCheck.Replace("'s", "");
                 }
-                
+
                 Misspelling theMissSpelling = null;
                 var existedWord = dictionary.Where(s => s == wordToBeCheck).FirstOrDefault();
                 if (string.IsNullOrEmpty(existedWord))
@@ -194,14 +268,14 @@ namespace SpellingCheck
                         theMissSpellingList.Add(theMissSpelling);
                     }
                 }
-                
-                
+
+
             }
             return theMissSpellingList.ToArray();
         }
-        
+
         /// <summary>
-        /// 
+        /// Main function:
         /// given a partially complete word, return an array of all suggested spellings
         /// </summary>
         /// <param name="text"></param>
@@ -212,7 +286,7 @@ namespace SpellingCheck
             {
                 return checkPossibleSpell(s, text);
             }).ToArray();
-        } 
+        }
 
     }
 }
