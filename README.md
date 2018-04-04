@@ -20,7 +20,9 @@
 
 3)      Must be written from scratch, no use of existing spell check libraries. We are trying to see how you approach the problem space. Using somebody else’s code will invalidate the purpose of the exercise.
 
- 
+### Results
+
+<img src="/Doc/Result.JPG"> 
 
 ### How to Use it:
 Create a checker, with the dictionary file:
