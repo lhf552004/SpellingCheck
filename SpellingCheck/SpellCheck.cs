@@ -60,7 +60,7 @@ namespace SpellingCheck
                 if (targetLength>= i)
                 {
                     partialToBeCheckedWord = toBeCheckedWord.Substring(0, i);
-                    if (partialDicWord.Equals(partialDicWord))
+                    if (partialDicWord.Equals(partialToBeCheckedWord))
                     {
                         isTheWord = true;
                     }
@@ -112,7 +112,7 @@ namespace SpellingCheck
 
         private bool checkPossibleSpell(string dicWord, string toBeCheckedWord)
         {
-            if (toBeCheckedWord.StartsWith(dicWord))
+            if (dicWord.Length>=toBeCheckedWord.Length && dicWord.StartsWith(toBeCheckedWord))
             {
                 return true;
             }

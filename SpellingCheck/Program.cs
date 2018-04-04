@@ -23,8 +23,8 @@ namespace SpellingCheck
                 }
                 Console.WriteLine("------");
             }
-            Console.WriteLine("Abb get the suggestion list:");
-            var suggestedList = checker.SuggestCompletion("Abb");
+            Console.WriteLine("Ab get the suggestion list:");
+            var suggestedList = checker.SuggestCompletion("Ab");
             foreach (var suggestion in suggestedList)
             {
                 Console.Write(suggestion);
