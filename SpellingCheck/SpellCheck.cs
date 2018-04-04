@@ -45,15 +45,12 @@ namespace SpellingCheck
         /// <returns></returns>
         private bool isMissSpell(string dicWord, string toBeCheckedWord, ref Misspelling theMissSpelling)
         {
-            bool isTheWord = false;
-            int targetLength = toBeCheckedWord.Length;
-            
-
             if(dicWord == toBeCheckedWord)
             {
                 //it is correct, so it's not need to suggestion
                 return false;
             }
+            
             //Condition1:
             //only some char is wrong but with the same width of string
             if(projectionCheck(dicWord, toBeCheckedWord,ref theMissSpelling))
@@ -93,19 +90,19 @@ namespace SpellingCheck
                 if (failNum > 0)
                 {
                     //It means there are some char are different
-                    float index = failNum / dicWord.Length;
-                    if(index <= 0.3)
+                    float failFloat = failNum;
+                    float theLegth = dicWord.Length;
+                    float index = failFloat / theLegth;
+                    if (index <= 0.3)
                     {
                         //if index less than a value, it means it is simlar to the dic word
                         //Then suggest the dicWord to change
                         if(theMissSpelling == null)
                         {
-                            theMissSpelling = new Misspelling()
-                            {
-                                TextPosition = theTable.Where(i => i.Value == false).FirstOrDefault().Key,
-                                Word = toBeCheckedWord
-                            };
+                            theMissSpelling = new Misspelling();
                         }
+                        theMissSpelling.TextPosition = theTable.Where(i => i.Value == false).FirstOrDefault().Key;
+                        
                         //indicate the dic word should be return
                         return true;
                     }
@@ -116,7 +113,9 @@ namespace SpellingCheck
         
         private bool similarityCheck(string dicWord, string toBeCheckedWord, ref Misspelling theMissSpelling)
         {
-
+            Dictionary<char, int> dicWordTable = new Dictionary<char, int>();
+            Dictionary<char, int> ToBeCheckedWordTable = new Dictionary<char, int>();
+            //for(var )
             return false;
         }
 
@@ -142,7 +141,7 @@ namespace SpellingCheck
         /// <param name="filePath"></param>
         private void readDic(string filePath)
         {
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
                 throw new Exception("Could not find the file.");
             }
@@ -171,18 +170,32 @@ namespace SpellingCheck
                 //remove space and tab
                 string wordToBeCheck = word.Trim();
                 //remove 's after a word
-                wordToBeCheck.Replace("'s", "");
-                Misspelling theMissSpelling = null;
-                //
-                var existedWords = dictionary.Where(s => 
+                if (wordToBeCheck.EndsWith("'s"))
                 {
-                    return isMissSpell(s, wordToBeCheck, out theMissSpelling);
-                }).ToArray();
-                if(theMissSpelling!=null && existedWords.Length > 0)
-                {
-                    theMissSpelling.Suggestions = existedWords;
-                    theMissSpellingList.Add(theMissSpelling);
+                    wordToBeCheck.Replace("'s", "");
                 }
+                
+                Misspelling theMissSpelling = null;
+                var existedWord = dictionary.Where(s => s == wordToBeCheck).FirstOrDefault();
+                if (string.IsNullOrEmpty(existedWord))
+                {
+                    theMissSpelling = new Misspelling()
+                    {
+                        Word = wordToBeCheck,
+                        TextPosition = -1
+                    };
+                    var suggestionWords = dictionary.Where(s =>
+                    {
+                        return isMissSpell(s, wordToBeCheck, ref theMissSpelling);
+                    }).ToArray();
+                    if (theMissSpelling != null)
+                    {
+                        theMissSpelling.Suggestions = suggestionWords;
+                        theMissSpellingList.Add(theMissSpelling);
+                    }
+                }
+                
+                
             }
             return theMissSpellingList.ToArray();
         }

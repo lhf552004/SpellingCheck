@@ -21,14 +21,16 @@ namespace SpellingCheck
                     Console.Write(suggestion);
                     Console.Write(" ");
                 }
-                Console.WriteLine("------");
+                Console.WriteLine("\n------");
             }
             Console.WriteLine("Ab get the suggestion list:");
             var suggestedList = checker.SuggestCompletion("Ab");
             foreach (var suggestion in suggestedList)
             {
                 Console.Write(suggestion);
+                Console.Write(" ");
             }
+            Console.WriteLine("\n------");
             Console.ReadLine();
         }
     }
