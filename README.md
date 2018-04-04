@@ -22,36 +22,36 @@
 
  
 
-The following is a suggestion as to how you might structure the solution using c# syntax. Feel free to use it or define your own solution.
+### How to Use it:
+Create a checker, with the dictionary file:
 
- 
+	SpellCheck checker = new SpellCheck("c:\\English.dictionary");
 
-class Misspelling
+Check the text with mutiple words:
+	var missSpellingList = checker.CheckText("Abren seam ceuching");
 
-{
+Get the suggestion list of a word:
 
-int TextPosition {get;set;}  //position within the original text of the misspelled word
+	 var suggestedList = checker.SuggestCompletion("Ab");
 
-string Word {get;set;}  //the misspelled word
-
-string[] Suggestions {get;set;} //an array of suggested correct spellings
-
-}
-
- 
-
-class SpellCheck
-
-{
-
-SpellCheck(string dictionaryFile);  //constructor is given the path to a dictionary text file
-
- 
-
-               Misspelling[]  CheckText(string text);  //given a string of multiple words, return an array of all misspelled words
-
-               
-
-               string[] SuggestCompletion(string text); //given a partially complete word, return an array of all suggested spellings
-
-}
+complete example:
+			SpellCheck checker = new SpellCheck("English.dictionary");
+            var missSpellingList = checker.CheckText("Abren seam ceuching");
+            foreach(var missSpelling in missSpellingList)
+            {
+                Console.WriteLine("missSpellingword {0}, postion: {1}", missSpelling.Word, missSpelling.TextPosition);
+                Console.WriteLine("Suggestion list:");
+                foreach (var suggestion in missSpelling.Suggestions)
+                {
+                    Console.Write(suggestion);
+                    Console.Write(" ");
+                }
+                Console.WriteLine("------");
+            }
+            Console.WriteLine("Ab get the suggestion list:");
+            var suggestedList = checker.SuggestCompletion("Ab");
+            foreach (var suggestion in suggestedList)
+            {
+                Console.Write(suggestion);
+            }
+            Console.ReadLine();
