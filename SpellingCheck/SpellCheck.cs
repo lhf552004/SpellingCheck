@@ -32,6 +32,9 @@ namespace SpellingCheck
         public SpellCheck() : this("English.dictionary") { }
         #endregion
         #region Field
+        /// <summary>
+        /// Store the dictionary words
+        /// </summary>
         private List<string> dictionary;
         #endregion
 
@@ -68,9 +71,11 @@ namespace SpellingCheck
 
         /// <summary>
         /// To check the char at the same position
+        /// If the index is less than the threshold value it means it is similar to the word in the dictionary, it return true
         /// </summary>
-        /// <param name="dicWord"></param>
-        /// <param name="toBeCheckedWord"></param>
+        /// <param name="dicWord">The word from dictionary</param>
+        /// <param name="toBeCheckedWord">The mis spelled word needs to be checked</param>
+        /// <param name="theMissSpelling">The ref of MissSpelling instance</param>
         /// <returns></returns>
         private bool projectionCheck(string dicWord, string toBeCheckedWord, ref Misspelling theMissSpelling)
         {
@@ -118,6 +123,13 @@ namespace SpellingCheck
             }
             return false;
         }
+        /// <summary>
+        /// Get minmum int value in three values
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         int min(int a, int b, int c)
         {
             return Math.Min(a, Math.Min(b, c));
@@ -156,6 +168,12 @@ namespace SpellingCheck
             }
             return matrix[dicWordLength, toBeCheckedWordLength];
         }
+        /// <summary>
+        /// To get the position which is misspelled in the toBeCheckedWord according to the dicWord
+        /// </summary>
+        /// <param name="dicWord"></param>
+        /// <param name="toBeCheckedWord"></param>
+        /// <returns></returns>
         private int getPosition(string dicWord, string toBeCheckedWord)
         {
             bool isContained = false;
@@ -179,6 +197,14 @@ namespace SpellingCheck
             }
             return position;
         }
+        /// <summary>
+        /// To check the misspelled word in similarity
+        /// If it is similar to the word in the dictionary, it return true
+        /// </summary>
+        /// <param name="dicWord">The word from dictionary</param>
+        /// <param name="toBeCheckedWord">The mis spelled word needs to be checked</param>
+        /// <param name="theMissSpelling">The ref of MissSpelling instance</param>
+        /// <returns></returns>
         private bool similarityCheck(string dicWord, string toBeCheckedWord, ref Misspelling theMissSpelling)
         {
             if (getDistance(dicWord, toBeCheckedWord) <= 2)
@@ -196,8 +222,8 @@ namespace SpellingCheck
         /// <summary>
         /// The predicate for getting suggestion list
         /// </summary>
-        /// <param name="dicWord"></param>
-        /// <param name="toBeCheckedWord"></param>
+        /// <param name="dicWord">The word in the dictionary</param>
+        /// <param name="toBeCheckedWord">The word which is entered</param>
         /// <returns></returns>
         private bool checkPossibleSpell(string dicWord, string toBeCheckedWord)
         {
@@ -212,7 +238,7 @@ namespace SpellingCheck
         /// <summary>
         /// load the dictionary file
         /// </summary>
-        /// <param name="filePath"></param>
+        /// <param name="filePath">dictionary file path</param>
         private void readDic(string filePath)
         {
             if (!File.Exists(filePath))
@@ -232,7 +258,7 @@ namespace SpellingCheck
         /// Main function :
         /// given a string of multiple words, return an array of all misspelled words
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">It is a string which contains several words.The words needs to be checked</param>
         /// <returns></returns>
         public Misspelling[] CheckText(string text)
         {
@@ -253,6 +279,7 @@ namespace SpellingCheck
                 var existedWord = dictionary.Where(s => s == wordToBeCheck).FirstOrDefault();
                 if (string.IsNullOrEmpty(existedWord))
                 {
+                    //If can not find the word in the dictionary it means misspelled
                     theMissSpelling = new Misspelling()
                     {
                         Word = wordToBeCheck,
@@ -278,7 +305,7 @@ namespace SpellingCheck
         /// Main function:
         /// given a partially complete word, return an array of all suggested spellings
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">It is a single word</param>
         /// <returns></returns>
         public string[] SuggestCompletion(string text)
         {
