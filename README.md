@@ -23,7 +23,7 @@
 ### Results
 
 <img src="/Doc/Result.JPG"> 
-
+<img src="/Doc/Result2.JPG"> 
 ### How to Use it:
 Create a checker, with the dictionary file:
 
