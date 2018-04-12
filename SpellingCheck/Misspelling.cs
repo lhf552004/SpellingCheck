@@ -25,6 +25,8 @@ namespace SpellingCheck
         /// </summary>
         public string[] Suggestions { get; set; } 
 
+        public string Suggestion { get; set; }
+
     }
     /// <summary>
     /// Suggestion Item which store the specific suggestion word and the relevated wrong postion

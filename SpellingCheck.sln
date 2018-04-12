@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpellingCheck", "SpellingCheck\SpellingCheck.csproj", "{0A9F31E3-0C83-4D4F-A855-6099C574F277}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csproj", "{27D1BD61-0F35-4D78-88B2-5AD6A41C3B6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +17,15 @@ Global
 		{0A9F31E3-0C83-4D4F-A855-6099C574F277}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A9F31E3-0C83-4D4F-A855-6099C574F277}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A9F31E3-0C83-4D4F-A855-6099C574F277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27D1BD61-0F35-4D78-88B2-5AD6A41C3B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27D1BD61-0F35-4D78-88B2-5AD6A41C3B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27D1BD61-0F35-4D78-88B2-5AD6A41C3B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27D1BD61-0F35-4D78-88B2-5AD6A41C3B6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E5F3ADBB-DC4F-48E1-9353-CC671E13081D}
 	EndGlobalSection
 EndGlobal

@@ -36,6 +36,7 @@ namespace SpellingCheck
         /// Store the dictionary words
         /// </summary>
         private List<string> dictionary;
+        private static SpellCheck _spellCheck;
         #endregion
 
         #region private method
@@ -253,7 +254,17 @@ namespace SpellingCheck
         }
         #endregion
 
-
+        public static SpellCheck DefaultSpellCheck
+        {
+            get
+            {
+                if(_spellCheck== null)
+                {
+                    _spellCheck = new SpellCheck();
+                }
+                return _spellCheck;
+            }
+        }
         /// <summary>
         /// Main function :
         /// given a string of multiple words, return an array of all misspelled words
@@ -292,6 +303,7 @@ namespace SpellingCheck
                     if (theMissSpelling != null)
                     {
                         theMissSpelling.Suggestions = suggestionWords;
+                        theMissSpelling.Suggestion = String.Join(",", suggestionWords);
                         theMissSpellingList.Add(theMissSpelling);
                     }
                 }
