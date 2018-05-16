@@ -25,7 +25,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Name" HorizontalAlignment="Center"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Width="100" HorizontalAlignment="Center" Text="{Binding InputString.InputStr, Mode=TwoWay}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Width="100" HorizontalAlignment="Center" Text="{Binding InputString, Mode=TwoWay}"/>
        
         <Button Content="Submit" Command="{Binding SubmitCommand}" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0"/>
         <ListView ItemsSource="{Binding Misspellings}" Grid.Row="3" Grid.Column="1" Width="300">

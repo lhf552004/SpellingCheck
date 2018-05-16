@@ -1,7 +1,0 @@
-C:\Projects\SpellingCheck\SpellingCheck\bin\Debug\SpellingCheck.exe.config
-C:\Projects\SpellingCheck\SpellingCheck\bin\Debug\SpellingCheck.exe
-C:\Projects\SpellingCheck\SpellingCheck\bin\Debug\SpellingCheck.pdb
-C:\Projects\SpellingCheck\SpellingCheck\obj\Debug\SpellingCheck.csprojResolveAssemblyReference.cache
-C:\Projects\SpellingCheck\SpellingCheck\obj\Debug\SpellingCheck.exe
-C:\Projects\SpellingCheck\SpellingCheck\obj\Debug\SpellingCheck.pdb
-C:\Projects\SpellingCheck\SpellingCheck\obj\Debug\SpellingCheck.csproj.CoreCompileInputs.cache

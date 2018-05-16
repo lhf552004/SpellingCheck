@@ -10,11 +10,11 @@ namespace WpfApp
 {
     public class ViewModel : ViewModelBase
     {
-        private InputString _inputString;
+        private string _inputString;
         private ObservableCollection<Misspelling> _misspellings;
         private ICommand _SubmitCommand;
 
-        public InputString InputString
+        public string InputString
         {
             get
             {
@@ -54,7 +54,7 @@ namespace WpfApp
 
         public ViewModel()
         {
-            InputString = new InputString();
+            InputString = "";
             Misspellings = new ObservableCollection<Misspelling>();
             Misspellings.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Misspellings_CollectionChanged);
 
@@ -68,11 +68,12 @@ namespace WpfApp
         
         private void Submit()
         {
-            var missSpellingList = SpellCheck.DefaultSpellCheck.CheckText(InputString.InputStr);
-            foreach(var missSpell in missSpellingList)
-            {
-                Misspellings.Add(missSpell);
-            }
+            var missSpellingList = SpellCheck.DefaultSpellCheck.CheckText(InputString);
+            Misspellings = new ObservableCollection<Misspelling>(missSpellingList);
+            //foreach(var missSpell in missSpellingList)
+            //{
+            //    Misspellings.Add(missSpell);
+            //}
 
         }
     }
